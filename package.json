@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Convierte imágenes PNG de cualquier tamaño a la paleta de colores de Game Boy y genera código GBDK",
   "main": "lib/gameboy-converter.js",
+  "type": "module",
   "bin": {
     "gameboy-convert": "./bin/cli.js",
     "gameboy-png-converter": "./bin/cli.js"

@@ -1,12 +1,12 @@
-const { 
+import { 
     convertImage, 
     convertToGameBoy, 
     generateGBDKCode,
     findClosestGameBoyColor,
     colorToGBDKValue,
     GAMEBOY_PALETTE 
-} = require('../lib/gameboy-converter');
-const fs = require('fs');
+} from '../lib/gameboy-converter.js';
+import fs from 'fs';
 
 async function runTests() {
     console.log('🧪 Running tests for gameboy-png-converter\n');
@@ -176,8 +176,8 @@ async function runTests() {
 }
 
 // Run tests if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
     runTests().catch(console.error);
 }
 
-module.exports = { runTests };
+export { runTests };
