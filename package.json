@@ -27,12 +27,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tu-usuario/gameboy-png-converter.git"
+    "url": "https://github.com/ginjol83/gameboy-png-converter.git"
   },
   "bugs": {
-    "url": "https://github.com/tu-usuario/gameboy-png-converter/issues"
+    "url": "https://github.com/ginjol83/gameboy-png-converter/issues"
   },
-  "homepage": "https://github.com/tu-usuario/gameboy-png-converter#readme",
+  "homepage": "https://github.com/ginjol83/gameboy-png-converter#readme",
   "files": [
     "lib/",
     "bin/",

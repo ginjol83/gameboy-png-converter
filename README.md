@@ -271,7 +271,7 @@ Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](L
 ## 🔗 Enlaces
 
 - [NPM Package](https://www.npmjs.com/package/gameboy-png-converter)
-- [GitHub Repository](https://github.com/tu-usuario/gameboy-png-converter)
+- [GitHub Repository](https://github.com/ginjol83/gameboy-png-converter)
 - [GBDK Documentation](https://gbdk-2020.github.io/gbdk-2020/)
 - [Game Boy Development Community](https://gbdev.io/)
 
