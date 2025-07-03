@@ -1,0 +1,50 @@
+{
+  "name": "gameboy-png-converter",
+  "version": "1.0.0",
+  "description": "Convierte imágenes PNG de cualquier tamaño a la paleta de colores de Game Boy y genera código GBDK",
+  "main": "lib/gameboy-converter.js",
+  "bin": {
+    "gameboy-convert": "./bin/cli.js",
+    "gameboy-png-converter": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "test": "node test/test.js",
+    "example": "node examples/usage-example.js"
+  },
+  "keywords": [
+    "gameboy", 
+    "png", 
+    "converter", 
+    "retro", 
+    "pixel-art", 
+    "gbdk", 
+    "game-development", 
+    "sprite", 
+    "tile"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/gameboy-png-converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tu-usuario/gameboy-png-converter/issues"
+  },
+  "homepage": "https://github.com/tu-usuario/gameboy-png-converter#readme",
+  "files": [
+    "lib/",
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "canvas": "^3.1.2"
+  },
+  "devDependencies": {},
+  "peerDependencies": {}
+}

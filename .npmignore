@@ -1,0 +1,42 @@
+# Archivos de desarrollo
+index.js
+create-test-image.js
+test_image*.png
+test_image*.c
+README-old.md
+
+# Archivos temporales y de prueba
+*.tmp
+*_test.*
+*_example.*
+
+# Directorios de desarrollo
+.vscode/
+.github/copilot-instructions.md
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencias
+node_modules/
+
+# Archivos de configuración del editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de respaldo
+*~
+*.backup
+*.bak
+
+# Archivos específicos de Windows
+Thumbs.db
+Desktop.ini
