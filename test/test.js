@@ -9,7 +9,7 @@ const {
 const fs = require('fs');
 
 async function runTests() {
-    console.log('🧪 Ejecutando pruebas para gameboy-png-converter\n');
+    console.log('🧪 Running tests for gameboy-png-converter\n');
     
     let passed = 0;
     let failed = 0;
@@ -22,48 +22,48 @@ async function runTests() {
         return result;
     }
     
-    // Test 1: Verificar paleta de Game Boy
+    // Test 1: Verify Game Boy palette
     test(
-        'Paleta de Game Boy tiene 4 colores',
+        'Game Boy palette has 4 colors',
         GAMEBOY_PALETTE.length,
         4
     );
     
-    // Test 2: Función findClosestGameBoyColor
+    // Test 2: findClosestGameBoyColor function
     const whiteColor = findClosestGameBoyColor(255, 255, 255);
     test(
-        'Color blanco se mapea al verde más claro',
+        'White color maps to lightest green',
         whiteColor.r === 155 && whiteColor.g === 188 && whiteColor.b === 15
     );
     
     const blackColor = findClosestGameBoyColor(0, 0, 0);
     test(
-        'Color negro se mapea al verde más oscuro',
+        'Black color maps to darkest green',
         blackColor.r === 15 && blackColor.g === 56 && blackColor.b === 15
     );
     
-    // Test 3: Función colorToGBDKValue
+    // Test 3: colorToGBDKValue function
     test(
-        'Verde más claro = valor GBDK 0',
+        'Lightest green = GBDK value 0',
         colorToGBDKValue(155, 188, 15),
         0
     );
     
     test(
-        'Verde más oscuro = valor GBDK 3',
+        'Darkest green = GBDK value 3',
         colorToGBDKValue(15, 56, 15),
         3
     );
     
-    // Test 4: Verificar que existe imagen de prueba
+    // Test 4: Verify test image exists
     const testImageExists = fs.existsSync('test_image.png');
     test(
-        'Imagen de prueba existe',
+        'Test image exists',
         testImageExists
     );
     
     if (testImageExists) {
-        // Test 5: Conversión de imagen
+        // Test 5: Image conversion
         const conversionResult = await convertToGameBoy(
             'test_image.png',
             'test_output.png',
@@ -71,17 +71,17 @@ async function runTests() {
         );
         
         test(
-            'Conversión de imagen exitosa',
+            'Image conversion successful',
             conversionResult.success
         );
         
         if (conversionResult.success) {
             test(
-                'Archivo de salida creado',
+                'Output file created',
                 fs.existsSync('test_output.png')
             );
             
-            // Test 6: Generación de código GBDK
+            // Test 6: GBDK code generation
             const gbdkResult = await generateGBDKCode(
                 'test_output.png',
                 'test_output.c',
@@ -89,30 +89,30 @@ async function runTests() {
             );
             
             test(
-                'Generación de código GBDK exitosa',
+                'GBDK code generation successful',
                 gbdkResult.success
             );
             
             if (gbdkResult.success) {
                 test(
-                    'Archivo .c creado',
+                    '.c file created',
                     fs.existsSync('test_output.c')
                 );
                 
                 const cContent = fs.readFileSync('test_output.c', 'utf8');
                 test(
-                    'Código C contiene variable personalizada',
+                    'C code contains custom variable',
                     cContent.includes('test_sprite_data')
                 );
                 
                 test(
-                    'Código C contiene definiciones',
+                    'C code contains definitions',
                     cContent.includes('#define TEST_SPRITE_WIDTH')
                 );
             }
         }
         
-        // Test 7: Función convertImage completa
+        // Test 7: Complete convertImage function
         const fullResult = await convertImage('test_image.png', {
             outputPath: 'full_test.png',
             generateGBDK: true,
@@ -121,32 +121,32 @@ async function runTests() {
         });
         
         test(
-            'Función convertImage completa exitosa',
+            'Complete convertImage function successful',
             fullResult.success
         );
         
         test(
-            'Conversión incluida en resultado',
+            'Conversion included in result',
             fullResult.conversion && fullResult.conversion.success
         );
         
         test(
-            'GBDK incluido en resultado',
+            'GBDK included in result',
             fullResult.gbdk && fullResult.gbdk.success
         );
     }
     
-    // Test 8: Manejo de errores
-    const errorResult = await convertImage('archivo_inexistente.png', {
+    // Test 8: Error handling
+    const errorResult = await convertImage('nonexistent_file.png', {
         verbose: false
     });
     
     test(
-        'Manejo correcto de archivo inexistente',
+        'Correct handling of nonexistent file',
         !errorResult.success
     );
     
-    // Limpiar archivos de prueba
+    // Clean up test files
     const testFiles = [
         'test_output.png',
         'test_output.c',
@@ -160,22 +160,22 @@ async function runTests() {
         }
     });
     
-    // Resumen
+    // Summary
     console.log('\n' + '═'.repeat(50));
-    console.log(`🎯 Resumen de pruebas:`);
-    console.log(`✅ Pasaron: ${passed}`);
-    console.log(`❌ Fallaron: ${failed}`);
+    console.log(`🎯 Test summary:`);
+    console.log(`✅ Passed: ${passed}`);
+    console.log(`❌ Failed: ${failed}`);
     console.log(`📊 Total: ${passed + failed}`);
     
     if (failed === 0) {
-        console.log('🎉 ¡Todas las pruebas pasaron!');
+        console.log('🎉 All tests passed!');
     } else {
-        console.log('⚠️  Algunas pruebas fallaron');
+        console.log('⚠️  Some tests failed');
         process.exit(1);
     }
 }
 
-// Ejecutar pruebas si es llamado directamente
+// Run tests if called directly
 if (require.main === module) {
     runTests().catch(console.error);
 }

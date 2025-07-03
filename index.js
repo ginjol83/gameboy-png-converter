@@ -2,16 +2,16 @@ const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs');
 const path = require('path');
 
-// Paleta de colores de Game Boy (4 tonos de verde)
+// Game Boy color palette (4 shades of green)
 const GAMEBOY_PALETTE = [
-    { r: 155, g: 188, b: 15 },   // Verde más claro
-    { r: 139, g: 172, b: 15 },   // Verde claro
-    { r: 48, g: 98, b: 48 },     // Verde oscuro
-    { r: 15, g: 56, b: 15 }      // Verde más oscuro
+    { r: 155, g: 188, b: 15 },   // Lightest green
+    { r: 139, g: 172, b: 15 },   // Light green
+    { r: 48, g: 98, b: 48 },     // Dark green
+    { r: 15, g: 56, b: 15 }      // Darkest green
 ];
 
 /**
- * Calcula la distancia euclidiana entre dos colores RGB
+ * Calculates the Euclidean distance between two RGB colors
  */
 function colorDistance(color1, color2) {
     const dr = color1.r - color2.r;
@@ -21,7 +21,7 @@ function colorDistance(color1, color2) {
 }
 
 /**
- * Encuentra el color más cercano en la paleta de Game Boy
+ * Finds the closest color in the Game Boy palette
  */
 function findClosestGameBoyColor(r, g, b) {
     let minDistance = Infinity;
@@ -39,71 +39,71 @@ function findClosestGameBoyColor(r, g, b) {
 }
 
 /**
- * Convierte una imagen PNG a paleta de Game Boy
+ * Converts a PNG image to Game Boy palette
  */
 async function convertToGameBoy(inputPath, outputPath) {
     try {
-        // Cargar la imagen
+        // Load the image
         const image = await loadImage(inputPath);
         
-        console.log(`📏 Procesando imagen de ${image.width}x${image.height} píxeles`);
+        console.log(`📏 Processing ${image.width}x${image.height} pixel image`);
         
-        // Crear canvas para procesar la imagen (usar el tamaño original)
+        // Create canvas to process the image (use original size)
         const canvas = createCanvas(image.width, image.height);
         const ctx = canvas.getContext('2d');
         
-        // Dibujar la imagen original
+        // Draw the original image
         ctx.drawImage(image, 0, 0);
         
-        // Obtener los datos de píxeles (usar las dimensiones originales)
+        // Get pixel data (use original dimensions)
         const imageData = ctx.getImageData(0, 0, image.width, image.height);
         const data = imageData.data;
         
-        // Convertir cada píxel a la paleta de Game Boy
+        // Convert each pixel to Game Boy palette
         for (let i = 0; i < data.length; i += 4) {
             const r = data[i];
             const g = data[i + 1];
             const b = data[i + 2];
-            // data[i + 3] es el canal alpha, lo mantenemos
+            // data[i + 3] is the alpha channel, we keep it
             
-            // Encontrar el color más cercano en la paleta
+            // Find the closest color in the palette
             const gameBoyColor = findClosestGameBoyColor(r, g, b);
             
-            // Reemplazar el color
+            // Replace the color
             data[i] = gameBoyColor.r;
             data[i + 1] = gameBoyColor.g;
             data[i + 2] = gameBoyColor.b;
-            // Mantener el canal alpha original
+            // Keep the original alpha channel
         }
         
-        // Aplicar los nuevos datos de píxeles
+        // Apply the new pixel data
         ctx.putImageData(imageData, 0, 0);
         
-        // Guardar la imagen convertida
+        // Save the converted image
         const buffer = canvas.toBuffer('image/png');
         fs.writeFileSync(outputPath, buffer);
         
-        console.log(`✅ Imagen convertida exitosamente: ${outputPath}`);
+        console.log(`✅ Image successfully converted: ${outputPath}`);
         
     } catch (error) {
-        console.error(`❌ Error al convertir la imagen: ${error.message}`);
+        console.error(`❌ Error converting image: ${error.message}`);
     }
 }
 
 /**
- * Convierte colores de Game Boy a valores de 2 bits para GBDK
+ * Converts Game Boy colors to 2-bit values for GBDK
  */
 function colorToGBDKValue(r, g, b) {
-    // Mapear colores de Game Boy a valores de 2 bits (0-3)
-    if (r === 155 && g === 188 && b === 15) return 0; // Verde más claro
-    if (r === 139 && g === 172 && b === 15) return 1; // Verde claro  
-    if (r === 48 && g === 98 && b === 48) return 2;   // Verde oscuro
-    if (r === 15 && g === 56 && b === 15) return 3;   // Verde más oscuro
-    return 0; // Por defecto
+    // Map Game Boy colors to 2-bit values (0-3)
+    if (r === 155 && g === 188 && b === 15) return 0; // Lightest green
+    if (r === 139 && g === 172 && b === 15) return 1; // Light green  
+    if (r === 48 && g === 98 && b === 48) return 2;   // Dark green
+    if (r === 15 && g === 56 && b === 15) return 3;   // Darkest green
+    return 0; // Default
 }
 
 /**
- * Genera código C para GBDK desde una imagen convertida
+ * Generates C code for GBDK from a converted image
  */
 async function generateGBDKCode(imagePath, outputPath) {
     try {
@@ -115,30 +115,30 @@ async function generateGBDKCode(imagePath, outputPath) {
         const imageData = ctx.getImageData(0, 0, image.width, image.height);
         const data = imageData.data;
         
-        // Calcular dimensiones en tiles (8x8 píxeles cada uno)
+        // Calculate dimensions in tiles (8x8 pixels each)
         const tileWidth = Math.ceil(image.width / 8);
         const tileHeight = Math.ceil(image.height / 8);
         
         let gbdkCode = '';
-        gbdkCode += `// Sprite/Tile generado automáticamente\n`;
-        gbdkCode += `// Dimensiones: ${image.width}x${image.height} píxeles (${tileWidth}x${tileHeight} tiles)\n`;
-        gbdkCode += `// Generado el: ${new Date().toISOString()}\n\n`;
+        gbdkCode += `// Automatically generated Sprite/Tile\n`;
+        gbdkCode += `// Dimensions: ${image.width}x${image.height} pixels (${tileWidth}x${tileHeight} tiles)\n`;
+        gbdkCode += `// Generated on: ${new Date().toISOString()}\n\n`;
         
         const baseName = path.parse(imagePath).name.replace(/[^a-zA-Z0-9]/g, '_');
         
-        // Generar datos de tiles
+        // Generate tile data
         gbdkCode += `#include <gb/gb.h>\n\n`;
-        gbdkCode += `// Datos del sprite/tile\n`;
+        gbdkCode += `// Sprite/tile data\n`;
         gbdkCode += `const unsigned char ${baseName}_data[] = {\n`;
         
         const tiles = [];
         
-        // Procesar imagen tile por tile (8x8)
+        // Process image tile by tile (8x8)
         for (let tileY = 0; tileY < tileHeight; tileY++) {
             for (let tileX = 0; tileX < tileWidth; tileX++) {
                 const tileData = [];
                 
-                // Procesar cada fila del tile (8 píxeles)
+                // Process each row of the tile (8 pixels)
                 for (let row = 0; row < 8; row++) {
                     let lowByte = 0;
                     let highByte = 0;
@@ -155,7 +155,7 @@ async function generateGBDKCode(imagePath, outputPath) {
                             
                             const colorValue = colorToGBDKValue(r, g, b);
                             
-                            // Game Boy usa 2 bits por píxel, divididos en dos bytes
+                            // Game Boy uses 2 bits per pixel, divided into two bytes
                             const bit = 7 - col;
                             if (colorValue & 1) lowByte |= (1 << bit);
                             if (colorValue & 2) highByte |= (1 << bit);
@@ -168,7 +168,7 @@ async function generateGBDKCode(imagePath, outputPath) {
             }
         }
         
-        // Escribir los datos en formato hexadecimal
+        // Write data in hexadecimal format
         for (let i = 0; i < tiles.length; i += 8) {
             gbdkCode += '    ';
             for (let j = 0; j < 8 && i + j < tiles.length; j++) {
@@ -180,90 +180,90 @@ async function generateGBDKCode(imagePath, outputPath) {
         
         gbdkCode += `};\n\n`;
         
-        // Añadir información útil
-        gbdkCode += `// Información del sprite/tile:\n`;
+        // Add useful information
+        gbdkCode += `// Sprite/tile information:\n`;
         gbdkCode += `#define ${baseName.toUpperCase()}_WIDTH ${image.width}\n`;
         gbdkCode += `#define ${baseName.toUpperCase()}_HEIGHT ${image.height}\n`;
         gbdkCode += `#define ${baseName.toUpperCase()}_TILE_WIDTH ${tileWidth}\n`;
         gbdkCode += `#define ${baseName.toUpperCase()}_TILE_HEIGHT ${tileHeight}\n`;
         gbdkCode += `#define ${baseName.toUpperCase()}_SIZE ${tiles.length}\n\n`;
         
-        // Añadir ejemplo de uso
-        gbdkCode += `// Ejemplo de uso:\n`;
+        // Add usage example
+        gbdkCode += `// Usage example:\n`;
         gbdkCode += `// set_sprite_data(0, ${tileWidth * tileHeight}, ${baseName}_data);\n`;
-        gbdkCode += `// set_sprite_tile(0, 0); // Para usar el primer tile\n`;
+        gbdkCode += `// set_sprite_tile(0, 0); // To use the first tile\n`;
         
-        // Guardar archivo
+        // Save file
         fs.writeFileSync(outputPath, gbdkCode);
-        console.log(`🎮 Código GBDK generado: ${outputPath}`);
-        console.log(`📊 Tiles generados: ${tileWidth * tileHeight} (${tileWidth}x${tileHeight})`);
+        console.log(`🎮 GBDK code generated: ${outputPath}`);
+        console.log(`📊 Tiles generated: ${tileWidth * tileHeight} (${tileWidth}x${tileHeight})`);
         
     } catch (error) {
-        console.error(`❌ Error al generar código GBDK: ${error.message}`);
+        console.error(`❌ Error generating GBDK code: ${error.message}`);
     }
 }
 
 /**
- * Función principal
+ * Main function
  */
 async function main() {
     const args = process.argv.slice(2);
     
     if (args.length === 0) {
-        console.log('🎮 Convertidor de imágenes PNG a paleta Game Boy');
+        console.log('🎮 PNG to Game Boy palette converter');
         console.log('');
-        console.log('Uso:');
-        console.log('  node index.js <archivo_entrada.png> [archivo_salida.png] [--gbdk]');
+        console.log('Usage:');
+        console.log('  node index.js <input_file.png> [output_file.png] [--gbdk]');
         console.log('');
-        console.log('Opciones:');
-        console.log('  --gbdk    Genera también código C para GBDK');
+        console.log('Options:');
+        console.log('  --gbdk    Also generates C code for GBDK');
         console.log('');
-        console.log('Ejemplos:');
-        console.log('  node index.js imagen.png');
-        console.log('  node index.js imagen.png imagen_gameboy.png');
-        console.log('  node index.js imagen.png --gbdk');
-        console.log('  node index.js imagen.png imagen_gameboy.png --gbdk');
+        console.log('Examples:');
+        console.log('  node index.js image.png');
+        console.log('  node index.js image.png gameboy_image.png');
+        console.log('  node index.js image.png --gbdk');
+        console.log('  node index.js image.png gameboy_image.png --gbdk');
         console.log('');
-        console.log('Nota: Acepta imágenes PNG de cualquier tamaño');
+        console.log('Note: Accepts PNG images of any size');
         return;
     }
     
-    // Verificar si se solicita generación de código GBDK
+    // Check if GBDK code generation is requested
     const generateGBDK = args.includes('--gbdk');
     const filteredArgs = args.filter(arg => arg !== '--gbdk');
     
     const inputPath = filteredArgs[0];
     let outputPath = filteredArgs[1];
     
-    // Si no se especifica archivo de salida, generar uno automáticamente
+    // If no output file is specified, generate one automatically
     if (!outputPath) {
         const parsedPath = path.parse(inputPath);
         outputPath = path.join(parsedPath.dir, `${parsedPath.name}_gameboy${parsedPath.ext}`);
     }
     
-    // Verificar que el archivo de entrada existe
+    // Verify that the input file exists
     if (!fs.existsSync(inputPath)) {
-        console.error(`❌ El archivo no existe: ${inputPath}`);
+        console.error(`❌ File does not exist: ${inputPath}`);
         return;
     }
     
-    // Verificar que es un archivo PNG
+    // Verify that it's a PNG file
     if (!inputPath.toLowerCase().endsWith('.png')) {
-        console.error('❌ El archivo debe ser una imagen PNG');
+        console.error('❌ File must be a PNG image');
         return;
     }
     
-    console.log(`🔄 Convirtiendo ${inputPath} a paleta Game Boy...`);
+    console.log(`🔄 Converting ${inputPath} to Game Boy palette...`);
     await convertToGameBoy(inputPath, outputPath);
     
-    // Generar código GBDK si se solicita
+    // Generate GBDK code if requested
     if (generateGBDK) {
-        console.log('🎮 Generando código GBDK...');
+        console.log('🎮 Generating GBDK code...');
         const parsedPath = path.parse(outputPath);
         const gbdkPath = path.join(parsedPath.dir, `${parsedPath.name}.c`);
         await generateGBDKCode(outputPath, gbdkPath);
     }
 }
 
-// Ejecutar la aplicación
+// Run the application
 main().catch(console.error);

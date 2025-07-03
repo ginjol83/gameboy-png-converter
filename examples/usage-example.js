@@ -2,24 +2,24 @@ const { convertImage, convertToGameBoy, generateGBDKCode } = require('../lib/gam
 const path = require('path');
 
 async function exampleUsage() {
-    console.log('🎮 Ejemplo de uso de gameboy-png-converter como librería\n');
+    console.log('🎮 Usage example of gameboy-png-converter as a library\n');
     
-    // Ejemplo 1: Conversión simple
-    console.log('📝 Ejemplo 1: Conversión simple');
+    // Example 1: Simple conversion
+    console.log('📝 Example 1: Simple conversion');
     const result1 = await convertImage('test_image.png', {
         verbose: true
     });
     
     if (result1.success) {
-        console.log('✅ Conversión exitosa:', result1.conversion.outputPath);
+        console.log('✅ Successful conversion:', result1.conversion.outputPath);
     } else {
-        console.log('❌ Error:', result1.conversion?.error || 'Error desconocido');
+        console.log('❌ Error:', result1.conversion?.error || 'Unknown error');
     }
     
     console.log('\n' + '─'.repeat(50) + '\n');
     
-    // Ejemplo 2: Conversión con código GBDK
-    console.log('📝 Ejemplo 2: Conversión con código GBDK');
+    // Example 2: Conversion with GBDK code
+    console.log('📝 Example 2: Conversion with GBDK code');
     const result2 = await convertImage('test_image.png', {
         outputPath: 'sprite_player.png',
         generateGBDK: true,
@@ -28,20 +28,20 @@ async function exampleUsage() {
     });
     
     if (result2.success) {
-        console.log('✅ Conversión exitosa:', result2.conversion.outputPath);
+        console.log('✅ Successful conversion:', result2.conversion.outputPath);
         if (result2.gbdk?.success) {
-            console.log('✅ Código GBDK generado:', result2.gbdk.outputPath);
+            console.log('✅ GBDK code generated:', result2.gbdk.outputPath);
             console.log(`📊 Tiles: ${result2.gbdk.tilesGenerated}`);
         }
     }
     
     console.log('\n' + '─'.repeat(50) + '\n');
     
-    // Ejemplo 3: Uso de funciones individuales
-    console.log('📝 Ejemplo 3: Uso de funciones individuales');
+    // Example 3: Using individual functions
+    console.log('📝 Example 3: Using individual functions');
     
     try {
-        // Solo conversión
+        // Conversion only
         const conversionResult = await convertToGameBoy(
             'test_image.png', 
             'manual_convert.png',
@@ -49,9 +49,9 @@ async function exampleUsage() {
         );
         
         if (conversionResult.success) {
-            console.log('✅ Conversión manual exitosa');
+            console.log('✅ Manual conversion successful');
             
-            // Solo generación GBDK
+            // GBDK generation only
             const gbdkResult = await generateGBDKCode(
                 'manual_convert.png',
                 'manual_convert.c',
@@ -62,32 +62,32 @@ async function exampleUsage() {
             );
             
             if (gbdkResult.success) {
-                console.log('✅ Código GBDK manual generado');
-                console.log(`📊 Tamaño de datos: ${gbdkResult.dataSize} bytes`);
+                console.log('✅ Manual GBDK code generated');
+                console.log(`📊 Data size: ${gbdkResult.dataSize} bytes`);
             }
         }
     } catch (error) {
-        console.error('❌ Error en conversión manual:', error.message);
+        console.error('❌ Error in manual conversion:', error.message);
     }
     
     console.log('\n' + '─'.repeat(50) + '\n');
     
-    // Ejemplo 4: Modo silencioso
-    console.log('📝 Ejemplo 4: Modo silencioso');
+    // Example 4: Silent mode
+    console.log('📝 Example 4: Silent mode');
     const result4 = await convertImage('test_image.png', {
         outputPath: 'silent_output.png',
         generateGBDK: true,
-        verbose: false  // Sin output en consola
+        verbose: false  // No console output
     });
     
-    console.log('Conversión silenciosa completada:', {
+    console.log('Silent conversion completed:', {
         success: result4.success,
         hasConversion: !!result4.conversion,
         hasGBDK: !!result4.gbdk
     });
 }
 
-// Ejecutar ejemplo si es llamado directamente
+// Execute example if called directly
 if (require.main === module) {
     exampleUsage().catch(console.error);
 }

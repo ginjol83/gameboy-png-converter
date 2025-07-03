@@ -1,83 +1,83 @@
 # 🎮 Game Boy PNG Converter
 
-Una librería y herramienta CLI de Node.js que convierte imágenes PNG a la paleta de colores clásica de Game Boy y genera código C compatible con GBDK.
+A Node.js library and CLI tool that converts PNG images to the classic Game Boy color palette and generates GBDK-compatible C code.
 
 [![npm version](https://badge.fury.io/js/gameboy-png-converter.svg)](https://badge.fury.io/js/gameboy-png-converter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🎯 Características
+## 🎯 Features
 
-- 🖼️ **Convierte imágenes PNG de cualquier tamaño**
-- 🎨 **Utiliza la paleta auténtica de 4 colores de Game Boy**
-- 🎮 **Genera código C para GBDK** (Game Boy Development Kit)
-- 📦 **Librería NPM reutilizable**
-- 💻 **CLI fácil de usar**
-- 🔧 **API programática completa**
-- 📏 **Convierte a formato de tiles de 8x8 píxeles**
-- ⚡ **Procesamiento rápido y eficiente**
+- 🖼️ **Converts PNG images of any size**
+- 🎨 **Uses the authentic 4-color Game Boy palette**
+- 🎮 **Generates C code for GBDK** (Game Boy Development Kit)
+- 📦 **Reusable NPM library**
+- 💻 **Easy-to-use CLI**
+- 🔧 **Complete programmatic API**
+- 📏 **Converts to 8x8 pixel tile format**
+- ⚡ **Fast and efficient processing**
 
-## 📦 Instalación
+## 📦 Installation
 
-### Como dependencia en tu proyecto:
+### As a dependency in your project:
 ```bash
 npm install gameboy-png-converter
 ```
 
-### Como herramienta global:
+### As a global tool:
 ```bash
 npm install -g gameboy-png-converter
 ```
 
-### Uso con npx (sin instalación):
+### Use with npx (without installation):
 ```bash
-npx gameboy-png-converter imagen.png --gbdk
+npx gameboy-png-converter image.png --gbdk
 ```
 
-## 🎨 Paleta de Colores Game Boy
+## 🎨 Game Boy Color Palette
 
-La librería utiliza la paleta de colores original de Game Boy:
-- Verde más claro: `#9BBC0F` (RGB: 155, 188, 15) → Valor GBDK: 0
-- Verde claro: `#8BAC0F` (RGB: 139, 172, 15) → Valor GBDK: 1
-- Verde oscuro: `#306230` (RGB: 48, 98, 48) → Valor GBDK: 2
-- Verde más oscuro: `#0F380F` (RGB: 15, 56, 15) → Valor GBDK: 3
+The library uses the original Game Boy color palette:
+- Lightest green: `#9BBC0F` (RGB: 155, 188, 15) → GBDK Value: 0
+- Light green: `#8BAC0F` (RGB: 139, 172, 15) → GBDK Value: 1
+- Dark green: `#306230` (RGB: 48, 98, 48) → GBDK Value: 2
+- Darkest green: `#0F380F` (RGB: 15, 56, 15) → GBDK Value: 3
 
-## 💻 Uso como CLI
+## 💻 CLI Usage
 
-### Sintaxis básica:
+### Basic syntax:
 ```bash
-gameboy-convert <archivo_entrada.png> [archivo_salida.png] [opciones]
+gameboy-convert <input_file.png> [output_file.png] [options]
 ```
 
-### Opciones:
-- `--gbdk`: Genera también código C compatible con GBDK
-- `--var <nombre>`: Nombre personalizado para variables GBDK
-- `--quiet`: Modo silencioso (sin output verbose)
+### Options:
+- `--gbdk`: Also generates GBDK-compatible C code
+- `--var <name>`: Custom name for GBDK variables
+- `--quiet`: Silent mode (no verbose output)
 
-### Ejemplos:
+### Examples:
 
 ```bash
-# Conversión básica
+# Basic conversion
 gameboy-convert sprite.png
 
-# Con nombre personalizado
+# With custom name
 gameboy-convert sprite.png sprite_gb.png
 
-# Generar código GBDK
+# Generate GBDK code
 gameboy-convert sprite.png --gbdk
 
-# Con variable personalizada para GBDK
+# With custom variable for GBDK
 gameboy-convert player.png --gbdk --var player_sprite
 
-# Modo silencioso
+# Silent mode
 gameboy-convert background.png --gbdk --quiet
 
-# Usando npx
-npx gameboy-png-converter imagen.png --gbdk
+# Using npx
+npx gameboy-png-converter image.png --gbdk
 ```
 
-## 📚 Uso como Librería
+## 📚 Library Usage
 
-### Importación:
+### Import:
 ```javascript
 const { 
     convertImage, 
@@ -87,12 +87,12 @@ const {
 } = require('gameboy-png-converter');
 ```
 
-### Función principal (recomendada):
+### Main function (recommended):
 ```javascript
-// Conversión simple
+// Simple conversion
 const result = await convertImage('sprite.png');
 
-// Conversión con código GBDK
+// Conversion with GBDK code
 const result = await convertImage('sprite.png', {
     outputPath: 'sprite_gb.png',
     generateGBDK: true,
@@ -108,16 +108,16 @@ console.log(result);
 // }
 ```
 
-### Funciones individuales:
+### Individual functions:
 ```javascript
-// Solo conversión de imagen
+// Image conversion only
 const convResult = await convertToGameBoy(
     'input.png', 
     'output.png',
     { verbose: false }
 );
 
-// Solo generación de código GBDK
+// GBDK code generation only
 const gbdkResult = await generateGBDKCode(
     'sprite_gb.png',
     'sprite.c',
@@ -125,30 +125,30 @@ const gbdkResult = await generateGBDKCode(
 );
 ```
 
-### Opciones disponibles:
+### Available options:
 ```javascript
 const options = {
-    outputPath: 'custom_output.png',  // Ruta personalizada
-    generateGBDK: true,               // Generar código GBDK
-    verbose: true,                    // Mostrar información
-    variableName: 'custom_sprite'     // Nombre para variables GBDK
+    outputPath: 'custom_output.png',  // Custom path
+    generateGBDK: true,               // Generate GBDK code
+    verbose: true,                    // Show information
+    variableName: 'custom_sprite'     // Name for GBDK variables
 };
 ```
 
-## 🎮 Integración con GBDK
+## 🎮 GBDK Integration
 
-### Ejemplo del código C generado:
+### Example of generated C code:
 ```c
 #include <gb/gb.h>
 
-// Datos del sprite/tile
+// Sprite/tile data
 const unsigned char player_sprite_data[] = {
     0x00, 0x00, 0x3C, 0x3C, 0x42, 0x7E, 0x99, 0xFF,
     0x99, 0xFF, 0x7E, 0x42, 0x3C, 0x3C, 0x00, 0x00,
-    // ... más datos
+    // ... more data
 };
 
-// Definiciones útiles
+// Useful definitions
 #define PLAYER_SPRITE_WIDTH 16
 #define PLAYER_SPRITE_HEIGHT 16
 #define PLAYER_SPRITE_TILE_WIDTH 2
@@ -156,130 +156,130 @@ const unsigned char player_sprite_data[] = {
 #define PLAYER_SPRITE_TILE_COUNT 4
 #define PLAYER_SPRITE_SIZE 64
 
-// Ejemplo de uso:
+// Usage example:
 // set_sprite_data(0, 4, player_sprite_data);
 // set_sprite_tile(0, 0);
 ```
 
-### Uso en tu proyecto GBDK:
+### Usage in your GBDK project:
 ```c
 #include <gb/gb.h>
 #include "player_sprite.c"
 
 void main() {
-    // Cargar datos del sprite
+    // Load sprite data
     set_sprite_data(0, PLAYER_SPRITE_TILE_COUNT, player_sprite_data);
     
-    // Configurar sprite
+    // Configure sprite
     set_sprite_tile(0, 0);
     move_sprite(0, 50, 50);
     
-    // Mostrar sprites
+    // Show sprites
     SHOW_SPRITES;
     
-    // Tu lógica del juego...
+    // Your game logic...
 }
 ```
 
-## 🧪 Pruebas
+## 🧪 Testing
 
-Ejecutar las pruebas incluidas:
+Run the included tests:
 ```bash
 npm test
 ```
 
-Ver ejemplos de uso:
+See usage examples:
 ```bash
 npm run example
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 gameboy-png-converter/
 ├── lib/
-│   └── gameboy-converter.js      # Librería principal
+│   └── gameboy-converter.js      # Main library
 ├── bin/
-│   └── cli.js                    # Interfaz CLI
+│   └── cli.js                    # CLI interface
 ├── examples/
-│   └── usage-example.js          # Ejemplos de uso
+│   └── usage-example.js          # Usage examples
 ├── test/
-│   └── test.js                   # Pruebas básicas
-├── package.json                  # Configuración NPM
-├── README.md                     # Este archivo
-└── LICENSE                       # Licencia MIT
+│   └── test.js                   # Basic tests
+├── package.json                  # NPM configuration
+├── README.md                     # This file
+└── LICENSE                       # MIT License
 ```
 
 ## 🔧 API Reference
 
 ### `convertImage(inputPath, options)`
-Función principal que combina conversión e generación de GBDK.
+Main function that combines conversion and GBDK generation.
 
-**Parámetros:**
-- `inputPath` (string): Ruta del archivo PNG
-- `options` (object): Opciones de configuración
+**Parameters:**
+- `inputPath` (string): PNG file path
+- `options` (object): Configuration options
 
-**Retorna:** Promise<Object> con resultado de la conversión
+**Returns:** Promise<Object> with conversion result
 
 ### `convertToGameBoy(inputPath, outputPath, options)`
-Convierte una imagen PNG a paleta de Game Boy.
+Converts a PNG image to Game Boy palette.
 
 ### `generateGBDKCode(imagePath, outputPath, options)`
-Genera código C para GBDK desde una imagen convertida.
+Generates C code for GBDK from a converted image.
 
 ### `findClosestGameBoyColor(r, g, b)`
-Encuentra el color más cercano en la paleta de Game Boy.
+Finds the closest color in the Game Boy palette.
 
 ### `GAMEBOY_PALETTE`
-Array con los 4 colores de la paleta de Game Boy.
+Array with the 4 colors of the Game Boy palette.
 
-## ⚠️ Limitaciones
+## ⚠️ Limitations
 
-- Solo acepta archivos PNG
-- El canal alpha se mantiene pero puede verse afectado
-- Los tiles de GBDK son siempre de 8x8 píxeles (estándar de Game Boy)
-- Requiere Node.js 14 o superior
+- Only accepts PNG files
+- Alpha channel is preserved but may be affected
+- GBDK tiles are always 8x8 pixels (Game Boy standard)
+- Requires Node.js 14 or higher
 
-## 🛠️ Algoritmo de Conversión
+## 🛠️ Conversion Algorithm
 
-### Conversión de Color
-Utiliza distancia euclidiana para encontrar el color más cercano:
+### Color Conversion
+Uses Euclidean distance to find the closest color:
 ```
-distancia = √[(r1-r2)² + (g1-g2)² + (b1-b2)²]
+distance = √[(r1-r2)² + (g1-g2)² + (b1-b2)²]
 ```
 
-### Conversión a GBDK
-1. **Mapeo de colores**: Cada color → valor de 2 bits (0-3)
-2. **División en tiles**: Imagen → tiles de 8x8 píxeles
-3. **Codificación**: Cada fila → dos bytes (formato Game Boy)
-4. **Generación**: Código C con arrays y definiciones
+### GBDK Conversion
+1. **Color mapping**: Each color → 2-bit value (0-3)
+2. **Tile division**: Image → 8x8 pixel tiles
+3. **Encoding**: Each row → two bytes (Game Boy format)
+4. **Generation**: C code with arrays and definitions
 
-## 🤝 Contribuciones
+## 🤝 Contributions
 
-Las contribuciones son bienvenidas. Por favor:
+Contributions are welcome. Please:
 
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📝 Licencia
+## 📝 License
 
-Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Enlaces
+## 🔗 Links
 
 - [NPM Package](https://www.npmjs.com/package/gameboy-png-converter)
 - [GitHub Repository](https://github.com/ginjol83/gameboy-png-converter)
 - [GBDK Documentation](https://gbdk-2020.github.io/gbdk-2020/)
 - [Game Boy Development Community](https://gbdev.io/)
 
-## 📊 Versiones
+## 📊 Versions
 
 ### v1.0.0
-- ✅ Conversión de PNG a paleta Game Boy
-- ✅ Generación de código GBDK
-- ✅ CLI y API programática
-- ✅ Soporte para cualquier tamaño de imagen
-- ✅ Pruebas básicas incluidas
+- ✅ PNG to Game Boy palette conversion
+- ✅ GBDK code generation
+- ✅ CLI and programmatic API
+- ✅ Support for any image size
+- ✅ Basic tests included
