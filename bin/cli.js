@@ -1,5 +1,5 @@
-import { convertImage } from '../lib/gameboy-converter.js';
-import path from 'path';
+import { convertImage } from '../lib/gameboy-converter.js'
+import path from 'path'
 
 /**
  * Main CLI function
@@ -21,7 +21,7 @@ const main = async () => {
         console.log('  --quiet             Silent mode (no verbose output)')
         console.log('')
         console.log('Examples:')
-        console.log('  gameboy-convert image.png');
+        console.log('  gameboy-convert image.png')
         console.log('  gameboy-convert image.png gameboy_image.png')
         console.log('  gameboy-convert image.png --gbdk')
         console.log('  gameboy-convert sprite.png --gbdk --var player_sprite')
@@ -35,7 +35,7 @@ const main = async () => {
     const generateGBDK = args.includes('--gbdk')
     const quiet = args.includes('--quiet')
     
-    const varIndex = args.indexOf('--var');
+    const varIndex = args.indexOf('--var')
     const variableName = (varIndex !== -1 && varIndex + 1 < args.length) 
         ? args[varIndex + 1] 
         : null
@@ -48,7 +48,7 @@ const main = async () => {
     
     if (!inputPath) {
         console.error('❌ You must specify an input file')
-        return;
+        return
     }
     
     // Execute conversion
@@ -65,6 +65,6 @@ const main = async () => {
 }
 
 // Execute the CLI
-main().catch(console.error);
+main().catch(console.error)
 
-export { main };
+export { main }

@@ -11,16 +11,27 @@ import fs from 'fs';
 async function runTests() {
     console.log('🧪 Running tests for gameboy-png-converter\n');
     
-    let passed = 0;
-    let failed = 0;
+    // Functional test runner - returns result object instead of mutating counters
+    const createTestRunner = () => {
+        const results = [];
+        
+        const test = (name, condition, expected = true) => {
+            const result = condition === expected;
+            console.log(`${result ? '✅' : '❌'} ${name}`);
+            results.push({ name, passed: result });
+            return result;
+        };
+        
+        const getStats = () => {
+            const passed = results.filter(r => r.passed).length;
+            const failed = results.filter(r => !r.passed).length;
+            return { passed, failed, total: results.length };
+        };
+        
+        return { test, getStats };
+    };
     
-    function test(name, condition, expected = true) {
-        const result = condition === expected;
-        console.log(`${result ? '✅' : '❌'} ${name}`);
-        if (result) passed++;
-        else failed++;
-        return result;
-    }
+    const { test, getStats } = createTestRunner();
     
     // Test 1: Verify Game Boy palette
     test(
@@ -146,7 +157,7 @@ async function runTests() {
         !errorResult.success
     );
     
-    // Clean up test files
+    // Clean up test files (functional approach)
     const testFiles = [
         'test_output.png',
         'test_output.c',
@@ -154,18 +165,18 @@ async function runTests() {
         'full_test.c'
     ];
     
-    testFiles.forEach(file => {
-        if (fs.existsSync(file)) {
-            fs.unlinkSync(file);
-        }
-    });
+    testFiles
+        .filter(file => fs.existsSync(file))
+        .forEach(file => fs.unlinkSync(file));
     
-    // Summary
+    // Summary (functional approach)
+    const { passed, failed, total } = getStats();
+    
     console.log('\n' + '═'.repeat(50));
     console.log(`🎯 Test summary:`);
     console.log(`✅ Passed: ${passed}`);
     console.log(`❌ Failed: ${failed}`);
-    console.log(`📊 Total: ${passed + failed}`);
+    console.log(`📊 Total: ${total}`);
     
     if (failed === 0) {
         console.log('🎉 All tests passed!');
